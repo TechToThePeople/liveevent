@@ -250,15 +250,20 @@
                     .columns(
                         [
                             function (d) {
-                                return d.display_name;
+                                return '<a href="'+CRM.url('civicrm/contact',{cid:d.id})+'">' + d.display_name + "</a>";
                             },
                             function (d) {
                                 return d.gender_id;
                             },
                             function (d) {
-                                return d.fee_amount;
+                                return d.org;
                             },
                             function (d) {
+                                return d.country;
+                            },
+                            function (d) {
+                                if (d.status_id==1)
+                                  return '<button type="button" class="btn btn-default  btn-xs action-confirm" title="confirm participant"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>'+statusLabel[d.status_id];
                                 return statusLabel[d.status_id];
                             }
                         ]
