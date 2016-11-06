@@ -71,7 +71,7 @@
         <a class="reset" href="javascript:statusPie.filterAll();dc.redrawAll();" style="display: none;">reset</a>
         <div class="clearfix"></div>
     </div>
-    <div id="feeRow">
+    <div id="nokfeeRow" class="hidden">
         <strong>Fee Paid</strong>
         <a class="reset" href="javascript:feeRow.filterAll();dc.redrawAll();" style="display: none;">reset</a>
         <div class="clearfix"></div>
@@ -81,7 +81,8 @@
             <tr class="header">
                 <th>Name</th>
                 <th>Gender</th>
-                <th>Fee Paid</th>
+                <th>Org</th>
+                <th>Country</th>
                 <th>Status</th>
             </tr>
         </thead>
@@ -105,6 +106,19 @@
     var gender = {crmAPI entity="contact" action="getoptions" field="gender_id"};
 
     {literal}
+
+        function enableStatusButton(dom,$){
+           $( dom ).on( "click", "button.action-confirm",
+             function() {
+               var d = $(this);
+               var param= [
+                 ["email","send",{contact_id:d.data('cid'),template_id:66}],
+                 ["participant","create",{id:d.data('id'),status_id:16}]
+               ];
+               console.log(param);
+               CRM.api3(param,"status changed").done(function(result){d.parent().html("Confirmed")});
+             });
+        };
 
         if((!eventDetails.is_error)&&(!participantDetails.is_error)){
 
@@ -250,7 +264,7 @@
                     .columns(
                         [
                             function (d) {
-                                return '<a href="'+CRM.url('civicrm/contact',{cid:d.id})+'">' + d.display_name + "</a>";
+                                return '<a href="'+CRM.url('civicrm/contact/view',{cid:d.cid})+'">' + d.display_name + "</a>";
                             },
                             function (d) {
                                 return d.gender_id;
@@ -263,12 +277,14 @@
                             },
                             function (d) {
                                 if (d.status_id==1)
-                                  return '<button type="button" class="btn btn-default  btn-xs action-confirm" title="confirm participant"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>'+statusLabel[d.status_id];
-                                return statusLabel[d.status_id];
+                                  return '<button type="button" class="btn btn-default  btn-xs action-confirm" title="confirm participant" data-cid="'+d.cid+'" data-id="'+d.id+'"><span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span></button>'
+   + '<a href="'+CRM.url('civicrm/contact/view/participant',{action:'view',id:d.id,cid:d.cid})+'">' + statusLabel[d.status_id] +'</a>';
+                                return '<a href="'+CRM.url('civicrm/contact/view/participant',{action:'view',id:d.id,cid:d.cid})+'">' + statusLabel[d.status_id] +'</a>';
                             }
                         ]
                     );
 
+                enableStatusButton("#participantTable",$);
 
                 participantsNumber
                     .group(grouped)

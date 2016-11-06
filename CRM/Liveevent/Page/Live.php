@@ -6,6 +6,12 @@ require_once 'api/class.api.php';
 class CRM_Liveevent_Page_Live extends CRM_Core_Page {
   function run() {
     // Example: Set the page-title dynamically; alternatively, declare a static title in xml/Menu/*.xml
+  CRM_Core_Resources::singleton()
+    ->addScriptFile('eu.tttp.liveevent', 'node_modules/vue/dist/vue.js')
+    ->addScriptFile('eu.tttp.liveevent', 'node_modules/vue-select/dist/vue-select.js')
+  ;
+    
+
 
   $api= new civicrm_api3();
   $event_id= CRM_Utils_Request::retrieve('event_id', 'Positive');
