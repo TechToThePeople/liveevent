@@ -8,7 +8,8 @@ class CRM_Liveevent_Page_Live extends CRM_Core_Page {
     // Example: Set the page-title dynamically; alternatively, declare a static title in xml/Menu/*.xml
   CRM_Core_Resources::singleton()
     ->addScriptFile('eu.tttp.liveevent', 'node_modules/vue/dist/vue.js')
-    ->addScriptFile('eu.tttp.liveevent', 'node_modules/vue-select/dist/vue-select.js')
+    ->addScriptFile('eu.tttp.liveevent', 'node_modules/vue-select2/dist/vue-select.js')
+    //->addScriptFile('eu.tttp.liveevent', 'node_modules/vue-select/dist/vue-search-select.js')
   ;
     
 
