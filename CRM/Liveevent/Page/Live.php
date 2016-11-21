@@ -19,6 +19,14 @@ class CRM_Liveevent_Page_Live extends CRM_Core_Page {
   if ($event_id ==0) {
     die (" civicrm/event/live?event_id={event_id}");
   }
+  $dummy=null;
+  foreach (array ("margin_top","margin_right","margin_bottom","margin_left") as $margin){
+    $v= CRM_Utils_Request::retrieve($margin, 'Positive');
+    if (!$v)  $v="null";
+    $this->assign($margin,$v);
+  }
+  $this->assign('role',$api->values());
+
   if (!$api->OptionValue->Get (array('option_group_id'=>'participant_role'))){
     die ("FATAL: ".$api->attr('error_message'));
   }
